@@ -36,14 +36,10 @@ class GameResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->translateLabel(),
             ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->prependActions([
+                Tables\Actions\Action::make('Seleccionar ganadores')
+                    ->color('success')
+                    ->url(fn (Game $record): string => self::getUrl('winners', ['record' => $record])),
             ]);
     }
 
@@ -60,6 +56,7 @@ class GameResource extends Resource
             'index' => Pages\ListGames::route('/'),
             'create' => Pages\CreateGame::route('/create'),
             'edit' => Pages\EditGame::route('/{record}/edit'),
+            'winners' => Pages\GameWinners::route('/{record}/winners'),
         ];
     }
 }
